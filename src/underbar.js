@@ -213,28 +213,33 @@
     // check if callback is provided
     if (!iterator) { iterator = _.identity; } 
     
-    var result = _.reduce(collection, function(item, accumulator) {
+    return  _.reduce(collection, function(accumulator, item) {
       return !!iterator(item) && accumulator;
     }, true);
-
-    // ensures the return value is a Boolean
-    return !!result;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    if (!iterator) { iterator = _.identity; } 
+    // iterator = iterator || _.identity; 
 
-    // if  
-    if (_.every(collection, !iterator)) {
-      return false;
+    // return !(_.every(collection,function(item){
+    //   return (!!iterator(item) === false);
+    // }))
+    if (iterator) {
+      return !(_.every(collection, function(item) {
+        return !iterator(item); 
+      }))
     } else {
-      return true;
+      return !(_.every(collection, function(item) {
+        return !item; 
+      }))
     }
-  };
+    
+  }; 
 
+  
 
   /**
    * OBJECTS
@@ -323,6 +328,17 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var storage = {};
+
+    return function() {
+      var tempKeys = JSON.stringify(arguments); 
+      if (storage.hasOwnProperty(tempKeys)) {
+        return storage[tempKeys];    
+      } else {
+        storage[tempKeys] = func.apply(this, arguments);
+        return storage[tempKeys];
+      }
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls

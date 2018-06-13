@@ -92,7 +92,7 @@
       it('fails for a collection of all-falsy values', function() {
         // Replace this line with an `expect` statement that tests
         // the behavior described by the `it` string
-        expect(_.every([false, 0, null], _.identity)).to.be.false;
+        expect(_.every([false, 0, null])).to.be.false;
         // throw new Error('This test is missing.');
       });
 
@@ -151,10 +151,7 @@
       it('should fail for a set containing no matching values', function() {
         // Replace this line with an `expect` statement that tests
         // the behavior described by the `it` string
-        var isZero = function(val) {
-          return val === 0;
-        }
-        expect(_.some([1, 2, 4, 5]), isZero).to.be.false;
+        expect(_.some([1, 3, 7, 5], isEven)).to.be.false;
         // throw new Error('This test is missing.');
       });
 
